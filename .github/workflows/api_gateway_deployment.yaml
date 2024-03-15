@@ -59,7 +59,7 @@ jobs:
               working-directory: ./infra
 
             - name: Terraform Plan
-              run: terraform plan -input=false
+              run: terraform plan -input=false -var-file=environment/prod.tfvars
               working-directory: ./infra
 
             - name: Terraform Apply
