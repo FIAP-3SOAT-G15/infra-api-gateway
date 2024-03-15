@@ -1,11 +1,11 @@
-name: APIGatewayDestroy
+name: API Gateway destroy
 
 on:
     workflow_dispatch:
 
 jobs:
-    api_gateway_destroy:
-        name: "Terraform"
+    apiGatewayDestroy:
+        name: "API Gateway Destroy"
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -28,7 +28,7 @@ jobs:
                   aws-region: ${{ vars.AWS_REGION }}
 
             - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v1
+              uses: hashicorp/setup-terraform@v3
               with:
                   cli_config_credentials_token: ${{ secrets.TF_CLOUD_USER_API_TOKEN }}
 

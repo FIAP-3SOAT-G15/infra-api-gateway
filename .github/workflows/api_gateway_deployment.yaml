@@ -1,82 +1,67 @@
-name: APIGatewayDeployment
+name: API Gateway deployment
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to use"
-        required: true
-        default: "main"
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: "Branch to use"
+                required: true
+                default: "main"
 
 jobs:
-  api_gateway_deployment:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
+    apiGatewayDeployment:
+        name: "API Gateway Deployment"
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: .
+        permissions:
+            id-token: write
+            contents: read
+            pull-requests: write
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-            ref: ${{ github.event.inputs.branch }}
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event.inputs.branch }}
 
-      # Specify working-directory for OpenAPI Generator step
-      - name: OpenAPI Generator
-        uses: hatamiarash7/openapi-generator@v0.3.0
-        with:
-          generator: openapi
-          openapi-file: ./openapi.json
-          output: ./.generated
-        working-directory: ./openapi
+            - name: OpenAPI Generator
+              uses: hatamiarash7/openapi-generator@v0.3.0
+              with:
+                  generator: openapi
+                  openapi-file: ./openapi/openapi.json
+                  output: ./openapi/.generated
 
-      # For Terraform steps, set the working-directory at each step
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
-          aws-region: ${{ vars.AWS_REGION }}
-        working-directory: ./infra
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
+                  aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_CLOUD_USER_API_TOKEN }}
-        working-directory: ./infra
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                  cli_config_credentials_token: ${{ secrets.TF_CLOUD_USER_API_TOKEN }}
 
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
-        working-directory: ./infra
+            - name: Terraform Init
+              run: terraform init
+              working-directory: ./infra
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
-        working-directory: ./infra
+            - name: Terraform Format
+              run: terraform fmt -check
+              working-directory: ./infra
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-        working-directory: ./infra
+            - name: Terraform Plan
+              run: terraform plan -input=false
+              working-directory: ./infra
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan
-        working-directory: ./infra
-
-      - name: Check Errors
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-        working-directory: ./infra
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false -var-file=environment/prod.tfvars
-        working-directory: ./infra
+            - name: Terraform Apply
+              run: terraform apply -auto-approve -input=false -var-file=environment/prod.tfvars
+              working-directory: ./infra
