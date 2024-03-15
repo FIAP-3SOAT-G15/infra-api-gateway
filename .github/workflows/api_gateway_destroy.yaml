@@ -1,4 +1,5 @@
-name: "API Gateway Destroy"
+name: APIGatewayDestroy
+
 on:
     workflow_dispatch:
 
