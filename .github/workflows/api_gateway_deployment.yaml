@@ -37,7 +37,7 @@ jobs:
               with:
                   generator: openapi
                   openapi-file: ./openapi/openapi.yaml
-                  output: ./openapi/.generated
+                  output-dir: ./openapi/.generated
 
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
