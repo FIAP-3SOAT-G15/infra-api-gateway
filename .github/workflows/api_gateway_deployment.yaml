@@ -35,7 +35,7 @@ jobs:
               uses: hatamiarash7/openapi-generator@v0.3.0
               with:
                   generator: openapi
-                  input-file: ./../openapi/openapi.yaml
+                  openapi-file: ./../openapi/openapi.json
                   output: ./../openapi/.generated
 
             - name: Configure AWS Credentials
