@@ -1,2 +1,1 @@
-# infra-api-gateway
-Infra API Gateway
+# Infra API Gateway

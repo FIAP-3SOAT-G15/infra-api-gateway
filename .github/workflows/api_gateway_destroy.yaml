@@ -1,0 +1,36 @@
+name: "API Gateway Destroy"
+on:
+    workflow_dispatch:
+
+jobs:
+    api_gateway_destroy:
+        name: "Terraform"
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: infra
+        permissions:
+            id-token: write
+            contents: read
+            pull-requests: write
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
+                  aws-region: ${{ vars.AWS_REGION }}
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                  cli_config_credentials_token: ${{ secrets.TF_CLOUD_USER_API_TOKEN }}
+
+            - name: Terraform Init
+              run: terraform init
+
+            - name: Terraform Destroy
+              run: terraform destroy -auto-approve -var-file=environment/prod.tfvars

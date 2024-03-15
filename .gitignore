@@ -1,0 +1,4 @@
+.generated
+.terraform
+.terraform.lock.hcl
+openapi-generator-cli.jar
