@@ -49,9 +49,9 @@ jobs:
               working-directory: ./infra
 
             - name: Terraform Plan
-              run: terraform plan -input=false -var-file=environment/prod.tfvars
+              run: terraform plan -input=false -var-file=environment/live.tfvars
               working-directory: ./infra
 
             - name: Terraform Apply
-              run: terraform apply -auto-approve -input=false -var-file=environment/prod.tfvars
+              run: terraform apply -auto-approve -input=false -var-file=environment/live.tfvars
               working-directory: ./infra
