@@ -22,7 +22,7 @@ jobs:
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
-                  role-to-assume: arn:aws:iam::202062340677:role/TechChallengeInfraDeployer
+                  role-to-assume: ${{ AWS_ROLE_DEPLOY }}
                   aws-region: ${{ vars.AWS_REGION }}
 
             - name: Setup Terraform
