@@ -24,6 +24,80 @@ tags:
     - name: cliente
       description: API de clientes
 paths:
+    /auth/signUp:
+        post:
+            tags:
+              - auth
+            summary: Cadastra um novo cliente
+            operationId: CustomerSignUp
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SignUpRequest'
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignUpResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignUpResponse'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignUpResponse'
+            x-amazon-apigateway-integration:
+                uri: ${app_sign_up_arn}
+                credentials: ${api_gateway_role}
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+    /auth/signIn:
+        post:
+            tags:
+              - auth
+            summary: Permitir que um cliente faça login
+            operationId: CustomerSignIn
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SignInRequest'
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignInTokenResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignInErrorResponse'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignInErrorResponse'
+            x-amazon-apigateway-integration:
+                uri: ${app_sign_in_arn}
+                credentials: ${api_gateway_role}
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
     /customers/{document}:
         get:
             tags:
@@ -1451,6 +1525,62 @@ paths:
                 connectionId: ${vpc_link_id}
 components:
     schemas:
+        SignUpRequest:
+            type: object
+            oneOf:
+                - properties:
+                    cpf:
+                        type: string
+                        pattern: '^[0-9]{11}$'
+                  required:
+                    - cpf
+                - properties:
+                    email:
+                        type: string
+                        pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                    name:
+                        type: string
+                  required:
+                    - email
+                    - name
+        SignUpResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+        SignInRequest:
+            type: object
+            oneOf:
+                - properties:
+                    cpf:
+                        type: string
+                        pattern: '^[0-9]{11}$'
+                  required:
+                    - cpf
+                - properties:
+                    email:
+                        type: string
+                        pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                  required:
+                    - email
+        SignInTokenResponse:
+            type: object
+            properties:
+                AccessToken:
+                    type: string
+                ExpiresIn:
+                    type: integer
+                TokenType:
+                    type: string
+                RefreshToken:
+                    type: string
+                IdToken:
+                    type: string
+        SignInErrorResponse:
+            type: object
+            properties:
+                message:
+                    type: string
         CustomerRequest:
             required:
                 - address
