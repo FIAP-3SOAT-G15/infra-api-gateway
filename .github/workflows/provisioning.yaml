@@ -1,0 +1,78 @@
+name: provisioning
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/provisioning.yml
+      - 'openapi/**'
+      - 'terraform/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/provisioning.yml
+      - 'openapi/**'
+      - 'terraform/**'
+
+jobs:
+  provisioning:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: OpenAPI Generator
+        uses: hatamiarash7/openapi-generator@v0.3.0
+        with:
+          generator: openapi
+          openapi-file: openapi/openapi.yaml
+          output-dir: openapi/.generated
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_DEPLOY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_CLOUD_USER_API_TOKEN }}
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: terraform
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+        working-directory: terraform
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -input=false -var-file=environment/live.tfvars
+        working-directory: terraform
+
+      - name: Check Errors
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+        working-directory: terraform
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false -var-file=environment/live.tfvars
+        working-directory: terraform
