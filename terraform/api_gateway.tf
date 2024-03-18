@@ -1,11 +1,21 @@
+data "aws_lb" "load_balancer" {
+  name = var.load_balancer_name
+}
+
+resource "aws_api_gateway_vpc_link" "vpc_link" {
+  name        = "self-order-management-api"
+  target_arns = [data.aws_lb.load_balancer.arn]
+}
+
 resource "aws_api_gateway_rest_api" "api_gateway" {
   name = "Self-Order Management API"
+
   body = templatefile(
     "${path.module}/../openapi/.generated/openapi.json",
     {
-      target_group_port = var.target_group_port,
-      dns_name          = data.aws_lb.load_balancer.dns_name,
-      vpc_link_id       = aws_api_gateway_vpc_link.vpc_link.id,
+      target_group_port = var.target_group_port
+      dns_name          = data.aws_lb.load_balancer.dns_name
+      vpc_link_id       = aws_api_gateway_vpc_link.vpc_link.id
       api_gateway_role  = aws_iam_role.api_gateway_lambda.arn
       app_sign_up_arn   = data.aws_lambda_function.app_sign_up.invoke_arn
       app_sign_in_arn   = data.aws_lambda_function.app_sign_in.invoke_arn
