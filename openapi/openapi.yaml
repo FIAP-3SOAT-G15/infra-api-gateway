@@ -249,6 +249,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -303,6 +305,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -345,6 +349,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -743,6 +749,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Stock"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/stock/{componentNumber}/increment
                 responses:
@@ -798,6 +806,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Stock"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/stock/{componentNumber}/decrement
                 responses:
@@ -830,6 +840,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products
                 responses:
@@ -871,6 +883,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products
                 responses:
@@ -913,6 +927,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/compose
                 responses:
@@ -945,6 +961,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Component"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components
                 responses:
@@ -986,6 +1004,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Component"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components
                 responses:
@@ -1382,6 +1402,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/search
                 responses:
@@ -1428,6 +1450,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/category/{category}
                 responses:
@@ -1475,6 +1499,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Component"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components/{productNumber}
                 responses:
@@ -1513,6 +1539,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Component"
+            security:
+              - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components/search
                 responses:
@@ -1524,6 +1552,17 @@ paths:
                 connectionType: VPC_LINK
                 connectionId: ${vpc_link_id}
 components:
+    securitySchemes:
+        lambdaAuthorizer:
+            type: apiKey
+            name: authorization
+            in: header
+            x-amazon-apigateway-authtype: custom
+            x-amazon-apigateway-authorizer:
+                type: token
+                authorizerUri: ${lambda_auth_authorizer_arn}
+                authorizerCredentials: ${api_gateway_role}
+                authorizerResultTtlInSeconds: 300
     schemas:
         SignUpRequest:
             type: object
