@@ -1294,8 +1294,6 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Product"
-            security:
-                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/menu
                 responses:
