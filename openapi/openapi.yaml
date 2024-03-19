@@ -27,7 +27,7 @@ paths:
     /auth/signUp:
         post:
             tags:
-              - auth
+                - auth
             summary: Cadastra um novo cliente
             operationId: CustomerSignUp
             requestBody:
@@ -35,26 +35,26 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SignUpRequest'
+                            $ref: "#/components/schemas/SignUpRequest"
             responses:
-                '200':
+                "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignUpResponse'
-                '400':
+                                $ref: "#/components/schemas/SignUpResponse"
+                "400":
                     description: Bad Request
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignUpResponse'
-                '500':
+                                $ref: "#/components/schemas/SignUpResponse"
+                "500":
                     description: Internal Server Error
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignUpResponse'
+                                $ref: "#/components/schemas/SignUpResponse"
             x-amazon-apigateway-integration:
                 uri: ${lambda_auth_sign_up_arn}
                 credentials: ${api_gateway_role}
@@ -64,7 +64,7 @@ paths:
     /auth/signIn:
         post:
             tags:
-              - auth
+                - auth
             summary: Permitir que um cliente faça login
             operationId: CustomerSignIn
             requestBody:
@@ -72,26 +72,26 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/SignInRequest'
+                            $ref: "#/components/schemas/SignInRequest"
             responses:
-                '200':
+                "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignInTokenResponse'
-                '400':
+                                $ref: "#/components/schemas/SignInTokenResponse"
+                "400":
                     description: Bad Request
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignInErrorResponse'
-                '500':
+                                $ref: "#/components/schemas/SignInErrorResponse"
+                "500":
                     description: Internal Server Error
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignInErrorResponse'
+                                $ref: "#/components/schemas/SignInErrorResponse"
             x-amazon-apigateway-integration:
                 uri: ${lambda_auth_sign_in_arn}
                 credentials: ${api_gateway_role}
@@ -124,6 +124,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers/{document}
                 responses:
@@ -165,6 +167,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers/{document}
                 responses:
@@ -206,6 +210,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers/{document}
                 responses:
@@ -250,7 +256,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -306,7 +312,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -350,7 +356,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/{productNumber}
                 responses:
@@ -398,6 +404,8 @@ paths:
                         application/json:
                             schema:
                                 type: object
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/payments/notifications/{orderNumber}
                 responses:
@@ -423,6 +431,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders
                 responses:
@@ -506,6 +516,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/{orderNumber}/start
                 responses:
@@ -549,6 +561,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/{orderNumber}/finish
                 responses:
@@ -592,6 +606,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/{orderNumber}/complete
                 responses:
@@ -635,6 +651,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/{orderNumber}/cancel
                 responses:
@@ -660,6 +678,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers
                 responses:
@@ -694,6 +714,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers
                 responses:
@@ -750,7 +772,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Stock"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/stock/{componentNumber}/increment
                 responses:
@@ -807,7 +829,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Stock"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/stock/{componentNumber}/decrement
                 responses:
@@ -841,7 +863,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products
                 responses:
@@ -884,7 +906,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products
                 responses:
@@ -928,7 +950,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/compose
                 responses:
@@ -962,7 +984,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Component"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components
                 responses:
@@ -1005,7 +1027,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Component"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components
                 responses:
@@ -1031,6 +1053,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Payment"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/payments
                 responses:
@@ -1068,6 +1092,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Payment"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/payments/{orderNumber}
                 responses:
@@ -1105,6 +1131,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/{orderNumber}
                 responses:
@@ -1145,6 +1173,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/status/{status}
                 responses:
@@ -1197,6 +1227,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/status/{status}/customer
                 responses:
@@ -1235,6 +1267,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Order"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/orders/customer
                 responses:
@@ -1364,6 +1398,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Customer"
+            security:
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/customers/search
                 responses:
@@ -1403,7 +1439,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/search
                 responses:
@@ -1451,7 +1487,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ProductResponse"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/products/category/{category}
                 responses:
@@ -1500,7 +1536,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Component"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components/{productNumber}
                 responses:
@@ -1540,7 +1576,7 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Component"
             security:
-              - lambdaAuthorizer: []
+                - lambdaAuthorizer: []
             x-amazon-apigateway-integration:
                 uri: http://${dns_name}:${target_group_port}/admin/components/search
                 responses:
@@ -1568,20 +1604,20 @@ components:
             type: object
             oneOf:
                 - properties:
-                    cpf:
-                        type: string
-                        pattern: '^[0-9]{11}$'
+                      cpf:
+                          type: string
+                          pattern: "^[0-9]{11}$"
                   required:
-                    - cpf
+                      - cpf
                 - properties:
-                    email:
-                        type: string
-                        pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-                    name:
-                        type: string
+                      email:
+                          type: string
+                          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                      name:
+                          type: string
                   required:
-                    - email
-                    - name
+                      - email
+                      - name
         SignUpResponse:
             type: object
             properties:
@@ -1591,17 +1627,17 @@ components:
             type: object
             oneOf:
                 - properties:
-                    cpf:
-                        type: string
-                        pattern: '^[0-9]{11}$'
+                      cpf:
+                          type: string
+                          pattern: "^[0-9]{11}$"
                   required:
-                    - cpf
+                      - cpf
                 - properties:
-                    email:
-                        type: string
-                        pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                      email:
+                          type: string
+                          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
                   required:
-                    - email
+                      - email
         SignInTokenResponse:
             type: object
             properties:
