@@ -229,12 +229,6 @@ paths:
             summary: Retorna produto pelo número
             operationId: getByProductNumber
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: productNumber
                   in: path
                   description: Número do produto
@@ -273,12 +267,6 @@ paths:
             summary: Atualiza produto
             operationId: update_1
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: productNumber
                   in: path
                   description: Número do produto
@@ -329,12 +317,6 @@ paths:
             summary: Remove produto
             operationId: delete
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: productNumber
                   in: path
                   description: Número do produto
@@ -733,12 +715,6 @@ paths:
             summary: Acrescenta quantidade do componente em estoque
             operationId: increment
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: componentNumber
                   in: path
                   description: Número do item em estoque
@@ -790,12 +766,6 @@ paths:
             summary: Reduz quantidade do componente em estoque
             operationId: decrement
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: componentNumber
                   in: path
                   description: Número do componente
@@ -846,13 +816,6 @@ paths:
                 - produto
             summary: Retorna todos os produtos
             operationId: findAll_4
-            parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
             responses:
                 "200":
                     description: Operação bem-sucedida
@@ -879,13 +842,6 @@ paths:
                 - produto
             summary: Cadastra produto
             operationId: create_2
-            parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
             requestBody:
                 content:
                     application/json:
@@ -923,13 +879,6 @@ paths:
                 - produto
             summary: Atribui subitems ao produto
             operationId: compose
-            parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
             requestBody:
                 content:
                     application/json:
@@ -967,13 +916,6 @@ paths:
                 - composição
             summary: Retorna todos os componentes
             operationId: findAll_5
-            parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
             responses:
                 "200":
                     description: Operação bem-sucedida
@@ -1000,13 +942,6 @@ paths:
                 - composição
             summary: Cadastra componente
             operationId: create_3
-            parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
             requestBody:
                 content:
                     application/json:
@@ -1198,12 +1133,6 @@ paths:
                   required: true
                   schema:
                       type: string
-                - name: customerNickname
-                  in: query
-                  description: Apelido do cliente
-                  required: false
-                  schema:
-                      type: string
                 - name: customerDocument
                   in: query
                   description: Documento do cliente
@@ -1246,12 +1175,6 @@ paths:
             summary: Retorna pedidos de cliente
             operationId: getByCustomer
             parameters:
-                - name: customerNickname
-                  in: query
-                  description: Apelido do cliente
-                  required: false
-                  schema:
-                      type: string
                 - name: customerDocument
                   in: query
                   description: Documento do cliente
@@ -1417,12 +1340,6 @@ paths:
             summary: Pesquisa produto por nome
             operationId: searchByName_2
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: name
                   in: query
                   description: Nome do produto
@@ -1457,12 +1374,6 @@ paths:
             summary: Retorna produtos por categoria
             operationId: findByCategory_1
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: category
                   in: path
                   description: Categoria
@@ -1505,12 +1416,6 @@ paths:
             summary: Retorna componentes do produto
             operationId: findByProductNumber
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: productNumber
                   in: path
                   description: Número do produto
@@ -1554,12 +1459,6 @@ paths:
             summary: Pesquisa componente por nome
             operationId: searchByName_3
             parameters:
-                - name: x-admin-token
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      default: token
                 - name: name
                   in: query
                   description: Nome do componente
@@ -1903,18 +1802,9 @@ components:
                     example: 1
         OrderRequest:
             required:
-                - customerNickname
                 - items
             type: object
             properties:
-                customerNickname:
-                    title: Apelido do cliente
-                    type: string
-                    example: Fulano
-                customerDocument:
-                    title: Documento do cliente
-                    type: string
-                    example: 444.555.666-77
                 items:
                     minItems: 1
                     type: array
@@ -1923,7 +1813,6 @@ components:
             description: Cadastro de pedido
         Order:
             required:
-                - customerNickname
                 - date
                 - items
                 - status
@@ -1936,8 +1825,6 @@ components:
                 date:
                     type: string
                     format: date
-                customerNickname:
-                    type: string
                 customer:
                     $ref: "#/components/schemas/Customer"
                 status:
