@@ -1133,12 +1133,6 @@ paths:
                   required: true
                   schema:
                       type: string
-                - name: customerNickname
-                  in: query
-                  description: Apelido do cliente
-                  required: false
-                  schema:
-                      type: string
                 - name: customerDocument
                   in: query
                   description: Documento do cliente
@@ -1181,12 +1175,6 @@ paths:
             summary: Retorna pedidos de cliente
             operationId: getByCustomer
             parameters:
-                - name: customerNickname
-                  in: query
-                  description: Apelido do cliente
-                  required: false
-                  schema:
-                      type: string
                 - name: customerDocument
                   in: query
                   description: Documento do cliente
@@ -1814,18 +1802,9 @@ components:
                     example: 1
         OrderRequest:
             required:
-                - customerNickname
                 - items
             type: object
             properties:
-                customerNickname:
-                    title: Apelido do cliente
-                    type: string
-                    example: Fulano
-                customerDocument:
-                    title: Documento do cliente
-                    type: string
-                    example: 444.555.666-77
                 items:
                     minItems: 1
                     type: array
@@ -1834,7 +1813,6 @@ components:
             description: Cadastro de pedido
         Order:
             required:
-                - customerNickname
                 - date
                 - items
                 - status
@@ -1847,8 +1825,6 @@ components:
                 date:
                     type: string
                     format: date
-                customerNickname:
-                    type: string
                 customer:
                     $ref: "#/components/schemas/Customer"
                 status:
