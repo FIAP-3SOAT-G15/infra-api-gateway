@@ -6,9 +6,6 @@ on:
 jobs:
   destroy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: terraform
     permissions:
       id-token: write
       contents: read
@@ -26,6 +23,13 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_DEPLOY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: OpenAPI Generator
+        uses: hatamiarash7/openapi-generator@v0.3.0
+        with:
+          generator: openapi
+          openapi-file: openapi/openapi.yaml
+          output-dir: openapi/.generated
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -33,6 +37,8 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: terraform
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -var-file=environment/live.tfvars
+        working-directory: terraform
