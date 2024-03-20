@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-    title: Self-Order Management API
+    title: Self-Order Management API TESTE
     description: API de autoatendimento em restaurante como implementação do Tech Challenge referente à primeira fase do curso de pós-graduação em Arquitetura de Software pela FIAP.
     contact:
         name: Grupo 15
