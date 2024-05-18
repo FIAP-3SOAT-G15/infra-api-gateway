@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "fiap-3soat-g15-infra-api-gateway-2"
+    bucket = "fiap-3soat-g15-iac-api-gateway"
     key    = "live/terraform.tfstate"
     region = "us-east-1"
   }
